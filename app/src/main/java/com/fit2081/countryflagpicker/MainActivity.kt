@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.fit2081.countryflagpicker.ui.theme.CountryFlagPickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -39,7 +41,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CountryFlagPickerScreen(modifier: Modifier) {
-    var countryCode by remember { mutableStateOf(TextFieldValue("")) }
+    var countryCode by remember { mutableStateOf("") }
+    var imageUrl by remember { mutableStateOf("")}
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,11 +58,20 @@ fun CountryFlagPickerScreen(modifier: Modifier) {
 
         // Button to generate the flag URL and trigger image loading
         Button(
-            onClick = { //generate the flag URL here
+            onClick = {
+                imageUrl = "https://flagcdn.com/w640/$countryCode.jpg"
             },
             modifier = Modifier.padding(16.dp)
         ) {
             Text("Get Flag")
+        }
+
+        if(imageUrl.isNotEmpty()) {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = "Country FLag",
+                modifier = Modifier.size(200.dp)
+            )
         }
     }
 }
