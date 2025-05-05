@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.fit2081.countryflagpicker.ui.theme.CountryFlagPickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,6 +44,8 @@ class MainActivity : ComponentActivity() {
 fun CountryFlagPickerScreen(modifier: Modifier) {
     var countryCode by remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("")}
+    var isLoading by remember { mutableStateOf(false)}
+    var loadError by remember { mutableStateOf(false) }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,7 +73,15 @@ fun CountryFlagPickerScreen(modifier: Modifier) {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = "Country FLag",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(200.dp),
+                onLoading = {
+                    isLoading = true
+                },
+                onSuccess = {isLoading = false},
+                onError = {
+                    loadError = true
+                    isLoading = false
+                          },
             )
         }
     }
