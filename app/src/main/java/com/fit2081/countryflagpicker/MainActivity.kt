@@ -4,13 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import com.fit2081.countryflagpicker.ui.theme.CountryFlagPickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CountryFlagPickerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    CountryFlagPickerScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -31,17 +38,30 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun CountryFlagPickerScreen(modifier: Modifier) {
+    var countryCode by remember { mutableStateOf(TextFieldValue("")) }
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        // Input field for the country code (e.g., "us", "ca", "au")
+        TextField(
+            value = countryCode,
+            onValueChange = { countryCode = it },
+            label = { Text("Country Code") },
+            modifier = Modifier.padding(16.dp)
+        )
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CountryFlagPickerTheme {
-        Greeting("Android")
+        // Button to generate the flag URL and trigger image loading
+        Button(
+            onClick = { //generate the flag URL here
+            },
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text("Get Flag")
+        }
     }
 }
+
+
